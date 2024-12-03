@@ -1,6 +1,7 @@
 ## The master file for package cfdr.pleio
 
 #' @import R6
+#' @import doParallel
 #' @import Matrix
 #' @import data.table
 #' @import matrixStats
@@ -287,7 +288,11 @@ cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
     ## FIXME: make the check of the reference data part of the definition
     ## somewhere around refdata_location
     if (verbose) pb <-txtProgressBar(min = 1, max = get_chr_num(self$refdat_orig), style = 3)
-    for ( i in get_chr_set(self$refdat_orig) ) {
+    cl <- makeCluster(10)
+    registerDoParallel(cl)
+    chro =  get_chr_set(self$refdat_orig)
+    foreach(a=1:length(chro)) %dopar% {
+      i = chro[a]
       if (verbose) setTxtProgressBar(pb, i)
 
       ## Load the sparse matrix from file
@@ -300,8 +305,8 @@ cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
       ## ... and put the baby away
       tmp <- tmp[ndx, ndx]
       saveRDS(tmp, get_chrmat(self$refdat_local, i))
-
     }
+    stopCluster(cl)
     if (verbose) close(pb)
 
     ## Add the reduced variant table, and we're done
