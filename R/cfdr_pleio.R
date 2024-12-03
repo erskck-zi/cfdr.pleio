@@ -144,6 +144,7 @@ cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
     if ( !inherits(trait1, "data.table") ) trait1 <- data.table( trait1 )
     if ( !inherits(trait2, "data.table") ) trait2 <- data.table( trait2 )
     stopifnot( inherits(refdat, "refdata_location") )
+    cat("load doParallel...\n")
     library(doParallel)
     ## Check format of exclusion ranges
     if (!missing(exclusion_range)) {
