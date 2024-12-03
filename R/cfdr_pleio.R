@@ -19,8 +19,9 @@ NULL
 #' cfdr_pleio$new()
 #' @export
 #' @import R6
+#' @import doParallel
 cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
-
+  library(doParallel)
   #' @field trait_data Genetic data for both traits, aligned with each other and
   #' the reference data
   #' @field trait_names Character vector of length two, the names of the traits
