@@ -138,7 +138,7 @@ cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
            refdat, ref_columns, local_refdat_path = "./local_refdat",
            correct_GC = TRUE, correct_SO = FALSE, exclusion_range,
            filter_maf_min = 0.005, filter_ambiguous = FALSE,
-           filter_fisher = FALSE, verbose = TRUE
+           filter_fisher = FALSE, verbose = TRUE, threads = 10
           ) {
     ## Check that arguments have right class
     if ( !inherits(trait1, "data.table") ) trait1 <- data.table( trait1 )
@@ -289,7 +289,7 @@ cfdr_pleio <- R6::R6Class("cfdr_pleio", public = list(
     ## FIXME: make the check of the reference data part of the definition
     ## somewhere around refdata_location
     if (verbose) pb <-txtProgressBar(min = 1, max = get_chr_num(self$refdat_orig), style = 3)
-    cl <- makeCluster(10)
+    cl <- makeCluster(threads)
     registerDoParallel(cl)
     chro =  get_chr_set(self$refdat_orig)
     foreach(a=1:length(chro)) %dopar% {
