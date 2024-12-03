@@ -1,5 +1,5 @@
 ## The master file for package cfdr.pleio
-
+library(doParallel)
 #' @import R6
 #' @import doParallel
 #' @import Matrix
